@@ -12,7 +12,7 @@ public class ConsValue extends Value {
     }
 
     public String toString() {
-        return "@list"+this.length();//计算长度必须递归计算
+        return "@list"+this.length();//recursive count the length
     }
 
     @Override

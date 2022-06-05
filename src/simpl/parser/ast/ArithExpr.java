@@ -14,7 +14,7 @@ public abstract class ArithExpr extends BinaryExpr {
 
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
+        //TODO
         return null;
     }
 }

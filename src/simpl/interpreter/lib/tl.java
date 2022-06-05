@@ -15,7 +15,19 @@ import simpl.typing.TypeResult;
 public class tl extends FunValue {
 
     public tl() {
-        // TODO
-        super(null, null, null);
+        super(Env.empty, Symbol.symbol("x"), new Expr() {
+            @Override public TypeResult typecheck(TypeEnv E) throws TypeError{
+                //it will be never used, but the abstract class requires to define such function
+                return null;
+            }
+            @Override public Value eval(State s) throws RuntimeError {
+                Symbol x = Symbol.symbol("x");
+                Value list = s.E.get(x);
+                if (list instanceof ConsValue) {
+                    return ((ConsValue) list).v2;
+                }
+                throw new RuntimeError("tl input not a list");
+            }
+        });
     }
 }

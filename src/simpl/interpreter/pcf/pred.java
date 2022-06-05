@@ -15,7 +15,20 @@ import simpl.typing.TypeResult;
 public class pred extends FunValue {
 
     public pred() {
-        // TODO
-        super(null, null, null);
+        super(Env.empty, Symbol.symbol("x"), new Expr() {
+            @Override public TypeResult typecheck(TypeEnv E) throws TypeError{
+                //it will be never used, but the abstract class requires to define such function
+                return null;
+            }
+            @Override public Value eval(State s) throws RuntimeError {
+                Symbol x = Symbol.symbol("x");
+                Value integer = s.E.get(x);
+                if (integer instanceof IntValue) {
+                    int preint=Math.max(0,((IntValue) integer).n-1);
+                    return new IntValue(preint);
+                }
+                throw new RuntimeError("pred input not a integer");
+            }
+        });
     }
 }

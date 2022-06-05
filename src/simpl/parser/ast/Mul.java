@@ -17,7 +17,12 @@ public class Mul extends ArithExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value v1=l.eval(s),v2=r.eval(s);
+        //From rule, we need to eval both side of the Add operator first
+
+        if((v1 instanceof IntValue)&&(v2 instanceof IntValue)){
+            return new IntValue (((IntValue) v1).n*((IntValue) v2).n);
+        }
+        else throw new RuntimeError("One side of Mul operator is not an integer");
     }
 }

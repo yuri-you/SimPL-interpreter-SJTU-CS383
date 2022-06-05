@@ -31,10 +31,10 @@ public class Env {
     }
 
     public Value get(Symbol y)throws RuntimeError  {
-        //标志在该环境
+        //Symbol in the Enviornmnet
         if(this.x.toString().equals(y.toString()))return this.v;
         else{
-            //标志不在该环境
+            //Symbol not in the Enviornmnet
             if(v==null)throw new RuntimeError("Free Variable");
             return this.E.get(y);
         }

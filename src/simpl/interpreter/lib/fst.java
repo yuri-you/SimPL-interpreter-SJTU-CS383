@@ -15,7 +15,19 @@ import simpl.typing.TypeResult;
 public class fst extends FunValue {
 
     public fst() {
-        // TODO
-        super(null, null, null);
+        super(Env.empty, Symbol.symbol("x"), new Expr() {
+            @Override public TypeResult typecheck(TypeEnv E) throws TypeError{
+                //it will be never used, but the abstract class requires to define such function
+                return null;
+            }
+            @Override public Value eval(State s) throws RuntimeError {
+                Symbol x = Symbol.symbol("x");
+                Value pair = s.E.get(x);
+                if (pair instanceof PairValue) {
+                    return ((PairValue) pair).v1;
+                }
+                throw new RuntimeError("fst input not a pair");
+            }
+        });
     }
 }
