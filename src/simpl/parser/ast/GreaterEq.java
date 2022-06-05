@@ -18,7 +18,11 @@ public class GreaterEq extends RelExpr {
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value left=this.l.eval(s),right=this.r.eval(s);
+        if((left instanceof IntValue)&&(right instanceof IntValue)){
+            boolean b=((IntValue) left).n>=((IntValue) right).n;
+            return new BoolValue(b);
+        }
+        else throw new RuntimeError("Greatereq input not int");
     }
 }

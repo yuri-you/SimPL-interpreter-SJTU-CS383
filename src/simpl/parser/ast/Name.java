@@ -8,6 +8,7 @@ import simpl.parser.Symbol;
 import simpl.typing.Type;
 import simpl.typing.TypeEnv;
 import simpl.typing.TypeError;
+import simpl.typing.TypeMismatchError;
 import simpl.typing.TypeResult;
 
 public class Name extends Expr {
@@ -24,13 +25,25 @@ public class Name extends Expr {
 
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        Type v=E.get(this.x);
+        if(v!=null){
+            return TypeResult.of(v);
+        }
+        else{
+            throw new TypeMismatchError();
+        }
     }
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value v=s.E.get(x);
+        if(v!=null){
+            if(v instanceof RecValue){
+                Rec ans=new Rec(x,((RecValue)v).e);
+                return ans.eval(State.of(((RecValue)v).E, s.M, s.p));
+            }
+            else return v;
+        }
+        else throw new RuntimeError("No such Name");
     }
 }

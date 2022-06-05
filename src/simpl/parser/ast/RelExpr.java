@@ -14,7 +14,10 @@ public abstract class RelExpr extends BinaryExpr {
 
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        TypeResult left=this.l.typecheck(E),right=this.r.typecheck(E);
+        Substitution S=left.s.compose(right.s);
+        Type typeleft=S.apply(left.t),typeright=S.apply(right.t);
+        S=S.compose(typeleft.unify(Type.INT)).compose(typeright.unify(Type.INT));
+        return TypeResult.of(S,Type.BOOL);
     }
 }

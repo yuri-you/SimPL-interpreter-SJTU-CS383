@@ -22,13 +22,24 @@ public class OrElse extends BinaryExpr {
 
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        TypeResult left=this.l.typecheck(E);
+        TypeResult right=this.r.typecheck(E);
+        Substitution S=left.s.compose(right.s);
+        Type typeleft=S.apply(left.t);
+        Type typeright=S.apply(right.t);
+        S=S.compose(typeleft.unify(Type.BOOL));
+        S=S.compose(typeright.unify(Type.BOOL));
+        return TypeResult.of(S,Type.BOOL);
     }
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value left=this.l.eval(s),right=this.r.eval(s);
+        if((left instanceof BoolValue)&&(right instanceof BoolValue)){
+            return new BoolValue(((BoolValue)left).b||((BoolValue)right).b);
+        }
+        else{
+            throw new RuntimeError("Orelse Input not Bool");
+        }
     }
 }

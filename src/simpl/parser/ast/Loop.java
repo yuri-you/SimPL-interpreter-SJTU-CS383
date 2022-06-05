@@ -25,13 +25,23 @@ public class Loop extends Expr {
 
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        TypeResult left=this.e1.typecheck(E),right=this.e2.typecheck(E);
+        Substitution S=left.s.compose(right.s);
+        S=S.compose(left.t.unify(Type.BOOL)).compose(right.t.unify(Type.UNIT));
+        return TypeResult.of(S,Type.UNIT);
     }
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value left=this.e1.eval(s);
+        if(left instanceof BoolValue){
+            if(((BoolValue)left).b){
+                return new Seq(this.e2,this).eval(s);
+            }
+            else{
+                return Value.UNIT;
+            }
+        }
+        else throw new RuntimeError("Loop left input not a bool");
     }
 }

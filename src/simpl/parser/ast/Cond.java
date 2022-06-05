@@ -26,13 +26,26 @@ public class Cond extends Expr {
 
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        TypeResult _if=this.e1.typecheck(E),_then=this.e2.typecheck(E),_else=this.e3.typecheck(E);
+        Substitution S=_if.s.compose(_if.t.unify(Type.BOOL));
+        S=S.compose(_then.s).compose(_else.s);
+        Type typethen=S.apply(_then.t),typeelse=S.apply(_else.t);
+        S=S.compose(typethen.unify(typeelse));
+        Type ans=S.apply(typethen);
+        return TypeResult.of(S,ans);
     }
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value  _if=this.e1.eval(s);
+        if(_if instanceof BoolValue){
+            if(((BoolValue)_if).b){
+                return this.e2.eval(s);
+            }
+            else{
+                return this.e3.eval(s);
+            }
+        }
+        else throw new RuntimeError("Condition input left not a boolen");
     }
 }

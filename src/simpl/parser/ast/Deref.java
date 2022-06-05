@@ -6,9 +6,10 @@ import simpl.interpreter.State;
 import simpl.interpreter.Value;
 import simpl.typing.RefType;
 import simpl.typing.Substitution;
-import simpl.typing.Type;
+// import simpl.typing.Type;
 import simpl.typing.TypeEnv;
 import simpl.typing.TypeError;
+import simpl.typing.TypeMismatchError;
 import simpl.typing.TypeResult;
 import simpl.typing.TypeVar;
 
@@ -24,13 +25,27 @@ public class Deref extends UnaryExpr {
 
     @Override
     public TypeResult typecheck(TypeEnv E) throws TypeError {
-        // TODO
-        return null;
+        TypeResult left=this.e.typecheck(E);
+        if(left.t instanceof RefType){
+            return TypeResult.of(left.s,((RefType)left.t).t);
+        }
+        else{
+            if(left.t instanceof TypeVar){
+                Substitution S=left.s;
+                TypeVar newvar=new TypeVar(true);
+                S=S.compose(left.t.unify(new RefType(newvar)));
+                return TypeResult.of(S,S.apply(newvar));
+            }
+            else throw new TypeMismatchError();
+        }
     }
 
     @Override
     public Value eval(State s) throws RuntimeError {
-        // TODO
-        return null;
+        Value left=this.e.eval(s);
+        if(left instanceof RefValue){
+            return s.M.get(((RefValue) left).p);
+        }
+        else throw new RuntimeError("Deref input not a Ref");
     }
 }
