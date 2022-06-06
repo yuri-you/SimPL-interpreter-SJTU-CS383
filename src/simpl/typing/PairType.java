@@ -20,7 +20,7 @@ public final class PairType extends Type {
             return t.unify(this);
         }
         else{
-            if(t instanceof ListType){
+            if(t instanceof PairType){
             Substitution left=this.t1.unify(((PairType) t).t1),right=this.t2.unify(((PairType) t).t2);
             return left.compose(right);
             }

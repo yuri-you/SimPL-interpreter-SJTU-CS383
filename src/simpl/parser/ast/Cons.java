@@ -34,9 +34,6 @@ public class Cons extends BinaryExpr {
     @Override
     public Value eval(State s) throws RuntimeError {
         Value left=l.eval(s),right=r.eval(s);
-        if(right instanceof ConsValue){
-            return new ConsValue(left, right);
-        }
-        else throw new RuntimeError("Cons right input not a list");
+        return new ConsValue(left, right);
     }
 }

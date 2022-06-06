@@ -5,7 +5,7 @@ import simpl.interpreter.FunValue;
 import simpl.interpreter.RuntimeError;
 import simpl.interpreter.State;
 import simpl.interpreter.Value;
-import simpl.parser.Symbol;
+// import simpl.parser.Symbol;
 import simpl.typing.ArrowType;
 import simpl.typing.Substitution;
 import simpl.typing.Type;

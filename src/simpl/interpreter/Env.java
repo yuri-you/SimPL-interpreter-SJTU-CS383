@@ -31,10 +31,10 @@ public class Env {
     }
 
     public Value get(Symbol y)throws RuntimeError  {
-        //Symbol in the Enviornmnet
+        //Symbol in this layer of the Enviornmnet
         if(this.x.toString().equals(y.toString()))return this.v;
         else{
-            //Symbol not in the Enviornmnet
+            //Symbol not in this layer of Enviornmnet
             if(v==null)throw new RuntimeError("Free Variable");
             return this.E.get(y);
         }

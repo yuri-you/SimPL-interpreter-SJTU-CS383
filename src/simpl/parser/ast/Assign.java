@@ -1,6 +1,6 @@
 package simpl.parser.ast;
 
-import javax.swing.text.DefaultStyledDocument.ElementSpec;
+// import javax.swing.text.DefaultStyledDocument.ElementSpec;
 
 import simpl.interpreter.RefValue;
 import simpl.interpreter.RuntimeError;
